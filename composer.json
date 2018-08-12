@@ -1,13 +1,13 @@
 {
     "name": "lisgroup/curl-http",
     "description": "The lisgroup curl-http",
-    "keywords": ["sexyphp", "curl","http request"],
+    "keywords": ["lisgroup", "curl","http request"],
     "type": "library",
     "license": "MIT",
     "homepage": "https://www.guke1.com",
     "support": {
-        "issues": "https://github.com/lisgroup/composer/issues",
-        "source": "https://github.com/lisgroup/composer/tree/master"
+        "issues": "https://github.com/lisgroup/curl-http/issues",
+        "source": "https://github.com/lisgroup/curl-http/tree/master"
     },
     "authors": [
         {
