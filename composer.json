@@ -15,5 +15,22 @@
             "email": "407505297@qq.com"
         }
     ],
-    "require": {}
+    "require": {
+        "php": "^5.3|^7.0"
+    },
+    "replace": {
+    },
+    "require-dev": {
+
+    },
+    "autoload": {
+        "classmap": [
+            "src/"
+        ]
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.0-dev"
+        }
+    }
 }
