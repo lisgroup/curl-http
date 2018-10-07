@@ -6,7 +6,7 @@
  * Time: 21:29
  */
 
-namespace Lisgroup\Src;
+namespace Curl;
 
 
 class Http
