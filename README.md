@@ -18,6 +18,26 @@ require __DIR__ . '/vendor/autoload.php';
 use \Curl\Http;
 
 $http = new Http();
-$result = $http->request('https://www.example.com/', '', 'GET');
+$result = $http->request('https://www.example.com/');
 var_dump($result);
+```
+GET Methods.
+
+```php
+// https://www.example.com/search?key=keyword
+$curl = new Http();
+$curl->get('https://www.example.com/search', array(
+    'key' => 'keyword',
+));
+```
+
+POST Methods.
+
+```php
+// https://www.example.com/login
+$curl = new Http();
+$curl->post('https://www.example.com/login', array(
+    'username' => 'myusername',
+    'password' => 'mypassword',
+));
 ```
