@@ -1,7 +1,7 @@
 <?php
 /**
- * Created by PhpStorm.
- * User: Administrator
+ * PHP Class For Curl-HTTP requests.
+ * User: lisgroup
  * Date: 2018/8/12
  * Time: 21:29
  */
@@ -11,29 +11,59 @@ namespace Curl;
 
 class Http
 {
-    // 是否记录日志,默认开启
-    public $writeLog = 1;
-    // 日志类型1:本地 2http，暂支持1
-    public $writeLogType = 1;
-    // 记录日志是否截取返回内容，大于0位具体字符数，等于0完整，默认0
-    public $logResContentLength = 0;
-
+    /**
+     * Http constructor.
+     * @param array $opts
+     */
     public function __construct($opts = array())
     {
-        if (!empty($opts)) {
-            foreach ($opts as $key => $o) {
-                $this->$key = $o;
-            }
+        foreach ($opts as $key => $o) {
+            $this->$key = $o;
         }
     }
 
     /**
+     * get
+     *
+     * @param $url
+     * @param array $params
+     * @param int $timeout
+     * @param array $header
+     * @param string $cookie
+     *
+     * @return array
+     */
+    public function get($url, $params = array(), $timeout = 8, $header = array(), $cookie = '')
+    {
+        return $this->request($url, $params, 'GET', $timeout, $header, $cookie);
+    }
+
+    /**
+     * post
+     *
+     * @param $url
+     * @param array $params
+     * @param int $timeout
+     * @param array $header
+     * @param string $cookie
+     *
+     * @return array
+     */
+    public function post($url, $params = array(), $timeout = 8, $header = array(), $cookie = '')
+    {
+        return $this->request($url, $params, 'POST', $timeout, $header, $cookie);
+    }
+
+    /**
+     * request
+     *
      * @param $url
      * @param array $params
      * @param string $method
      * @param int $timemout
      * @param array $headers
      * @param string $cookie
+     *
      * @return array
      */
     public function request($url, $params = array(), $method = "GET", $timemout = 8, $headers = array(), $cookie = '')
@@ -56,7 +86,7 @@ class Http
             $paramsString = "";
         }
 
-        //$tempUrl = $url;
+        // $tempUrl = $url;
         if ($method == "GET" && !empty($paramsString)) {
             $url = $url."?".$paramsString;
         }
