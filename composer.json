@@ -1,7 +1,7 @@
 {
     "name": "lisgroup/curl-http",
     "description": "The lisgroup curl-http",
-    "keywords": ["lisgroup", "curl","http request"],
+    "keywords": ["lisgroup", "curl", "http request", "get,post,delete method"],
     "type": "library",
     "license": "MIT",
     "homepage": "https://www.guke1.com",
