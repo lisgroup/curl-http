@@ -12,6 +12,11 @@ namespace Curl;
 class Http
 {
     /**
+     * @var self instance
+     */
+    private static $instance;
+
+    /**
      * Http constructor.
      * @param array $opts
      */
@@ -23,7 +28,20 @@ class Http
     }
 
     /**
-     * get
+     * @param array $conf
+     *
+     * @return Http
+     */
+    public static function getInstent($conf = array())
+    {
+        if (!isset(self::$instance)) {
+            self::$instance = new static($conf);
+        }
+        return self::$instance;
+    }
+
+    /**
+     * GET
      *
      * @param $url
      * @param array $params
@@ -39,7 +57,7 @@ class Http
     }
 
     /**
-     * post
+     * POST
      *
      * @param $url
      * @param array $params
@@ -60,16 +78,16 @@ class Http
      * @param $url
      * @param array $params
      * @param string $method
-     * @param int $timemout
+     * @param int $timemOut
      * @param array $headers
      * @param string $cookie
      *
      * @return array
      */
-    public function request($url, $params = array(), $method = "GET", $timemout = 8, $headers = array(), $cookie = '')
+    public function request($url, $params = array(), $method = "GET", $timemOut = 8, $headers = array(), $cookie = '')
     {
         $method = strtoupper($method);
-        // 新增请求方式
+        // New request method
         $methodArray = ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'];
 
         if (!in_array($method, $methodArray)) {
@@ -91,19 +109,19 @@ class Http
             $url = $url."?".$paramsString;
         }
 
-        // 初始化
+        // curl_init
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_0);
         curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
         curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5);
-        curl_setopt($ch, CURLOPT_TIMEOUT, $timemout);
+        curl_setopt($ch, CURLOPT_TIMEOUT, $timemOut);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         if (strtolower(substr($url, 0, 8)) == 'https://') {
-            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); // 跳过证书检查
-            curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0); // 从证书中检查SSL加密算法是否存在
+            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); // Skip check certificate
+            curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0); // VerifyHost no
         }
 
-        // 请求头
+        // Request header
         if (!empty($headers)) {
             curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
         }
@@ -112,34 +130,31 @@ class Http
             curl_setopt($ch, CURLOPT_COOKIE, $cookie);
         }
 
-        // 指定请求方式
+        // Request method
         switch ($method) {
             case 'GET':
                 break;
             case 'POST':
                 curl_setopt($ch, CURLOPT_POST, true);
-                curl_setopt($ch, CURLOPT_POSTFIELDS, $paramsString); //设置请求体，提交数据包
+                curl_setopt($ch, CURLOPT_POSTFIELDS, $paramsString); // Request body
                 break;
             case 'PUT':
                 curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'PUT');
-                curl_setopt($ch, CURLOPT_POSTFIELDS, $paramsString); //设置请求体，提交数据包
+                curl_setopt($ch, CURLOPT_POSTFIELDS, $paramsString); // Request body
                 break;
             case 'DELETE':
                 curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'DELETE');
                 break;
         }
-        /*if ($method == "post") {
-            curl_setopt($ch, CURLOPT_POST, true);
-            curl_setopt($ch, CURLOPT_POSTFIELDS, $paramsString);
-        }*/
+
         curl_setopt($ch, CURLOPT_URL, $url);
 
-        // 请求网络
+        // request time
         $timeStampBegin = microtime(true);
         //$timeBegin = date("Y-m-d H:i:s");
         $httpContent = curl_exec($ch);
         $timeStampEnd = microtime(true);
-        //$timeEnd = date("Y-m-d H:i:s");
+        // $timeEnd = date("Y-m-d H:i:s");
 
         $httpInfo = array();
         $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
@@ -148,18 +163,18 @@ class Http
         $httpError = curl_error($ch);
         $httpCost = round($timeStampEnd - $timeStampBegin, 3);
 
-        // 关闭
+        // close curl
         curl_close($ch);
 
         $curlErrMsg = $this->_curlErrNoMap($curlErrNo);
 
         return array(
-            'httpCode' => $httpCode, // http状态码
-            'error' => $httpError, // 错误信息
-            'curlErrno' => $curlErrNo, //curl状态码,
+            'httpCode' => $httpCode, // http code
+            'error' => $httpError, // error message
+            'curlErrno' => $curlErrNo, // curl error code,
             'curlErrMsg' => $curlErrMsg,
-            'cost' => $httpCost, // 网络执行时间
-            'content' => $httpContent, // 网络返回内容
+            'cost' => $httpCost, // Network execution time
+            'content' => $httpContent, // return content
             'httpInfo' => $httpInfo
         );
     }
