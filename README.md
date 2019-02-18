@@ -12,30 +12,36 @@ Support PHP Version: 5.3+
 
 ### Quick Start and Examples
 
+**NEW:** Get instances of class `Http`
+
 ```php
 require __DIR__ . '/vendor/autoload.php';
 
 use \Curl\Http;
 
-$http = new Http();
+// Get Class `Http` instances
+$http = Http::getInstent(); // Old Version: $http = new Http();
+
 $result = $http->request('https://www.example.com/');
 var_dump($result);
 ```
+
 GET Methods.
 
 ```php
 // https://www.example.com/search?key=keyword
-$curl = new Http();
-$curl->get('https://www.example.com/search', array(
+$curl = Http::getInstent(); // Old Version: $curl = new Http();
+$result = $curl->get('https://www.example.com/search', array(
     'key' => 'keyword',
 ));
+var_dump($result);
 ```
 
 POST Methods.
 
 ```php
 // https://www.example.com/login
-$curl = new Http();
+$curl = Http::getInstent(); // Old Version: $curl = new Http();
 $curl->post('https://www.example.com/login', array(
     'username' => 'myusername',
     'password' => 'mypassword',
